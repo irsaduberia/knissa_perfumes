@@ -289,6 +289,9 @@ def order_success(request, order_id):
 def online_payment(request):
     qr_obj = PaymentQR.objects.filter(is_active=True).first()
 
+    print("QR OBJECT:", qr_obj)
+    print("QR IMAGE:", qr_obj.image if qr_obj else None)
+
     qr = None
     if qr_obj and qr_obj.image:
         qr = qr_obj.image.url
