@@ -11,7 +11,6 @@ from .models import (
     PaymentQR
 )
 
-
 # ================================
 # VARIANT INLINE (INSIDE FRAGRANCE)
 # ================================
@@ -35,15 +34,13 @@ class FragranceAdmin(admin.ModelAdmin):
 
     def make_active(self, request, queryset):
         queryset.update(is_active=True)
-    make_active.short_description = "Mark selected as Active"
 
     def make_inactive(self, request, queryset):
         queryset.update(is_active=False)
-    make_inactive.short_description = "Mark selected as Inactive"
 
 
 # ================================
-# VARIANT ADMIN (SEPARATE VIEW)
+# VARIANT ADMIN
 # ================================
 @admin.register(Variant)
 class VariantAdmin(admin.ModelAdmin):
@@ -72,7 +69,7 @@ class OrderItemInline(admin.TabularInline):
 
 
 # ================================
-# ORDER ADMIN (VERY IMPORTANT)
+# ORDER ADMIN
 # ================================
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
@@ -100,31 +97,11 @@ class OrderAdmin(admin.ModelAdmin):
 
     inlines = [OrderItemInline]
 
-    actions = ['mark_as_confirmed', 'mark_as_shipped', 'mark_as_delivered']
-
-    def mark_as_confirmed(self, request, queryset):
-        queryset.update(status='Confirmed')
-    mark_as_confirmed.short_description = "Mark as Confirmed"
-
-    def mark_as_shipped(self, request, queryset):
-        queryset.update(status='Shipped')
-    mark_as_shipped.short_description = "Mark as Shipped"
-
-    def mark_as_delivered(self, request, queryset):
-        queryset.update(status='Delivered')
-    mark_as_delivered.short_description = "Mark as Delivered"
-
 
 # ================================
-# ORDER ITEM ADMIN
+# SIMPLE MODELS
 # ================================
-@admin.register(OrderItem)
-class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ('order', 'product_name', 'size', 'price', 'quantity')
-
-
 admin.site.register(SiteSettings)
-admin.site.register(SliderImage)   
+admin.site.register(SliderImage)
 admin.site.register(About)
-admin.site.register(PaymentSettings)
 admin.site.register(PaymentQR)

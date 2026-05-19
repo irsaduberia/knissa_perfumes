@@ -1,7 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Fragrance, SliderImage, About,  Variant, Order, OrderItem
-from .models import PaymentQR
-import urllib.parse
+from .models import Fragrance, SliderImage, About, Variant, Order, OrderItem, PaymentQR
 
 
 # ------------------------
@@ -10,13 +8,11 @@ import urllib.parse
 def home(request):
     sliders = SliderImage.objects.filter(is_active=True)
 
-    # Get one product per category safely
     him = Fragrance.objects.filter(category='him', is_active=True).first()
     her = Fragrance.objects.filter(category='her', is_active=True).first()
     oud = Fragrance.objects.filter(category='oud', is_active=True).first()
     unisex = Fragrance.objects.filter(category='unisex', is_active=True).first()
 
-    # Build structured products list
     products = [
         {"label": "For Him", "product": him},
         {"label": "For Her", "product": her},
@@ -24,7 +20,6 @@ def home(request):
         {"label": "Oud", "product": oud},
     ]
 
-    # Remove empty products safely
     products = [p for p in products if p["product"]]
 
     about = About.objects.first()
@@ -34,37 +29,39 @@ def home(request):
         'products': products,
         'about': about,
     })
-    
+
+
+# ------------------------
+# CATEGORY PAGE (GENERIC)
+# ------------------------
 def category_page(request, category):
     variants_100 = Variant.objects.filter(
         fragrance__category=category,
-        size=100,
+        size='100',
         is_active=True
     )
 
     variants_30 = Variant.objects.filter(
         fragrance__category=category,
-        size=30,
+        size='30',
         is_active=True
     )
 
-    # ADD SAVE AMOUNT HERE (IMPORTANT)
     for v in list(variants_100) + list(variants_30):
-        if v.mrp and v.mrp > v.selling_price:
-            v.save_amount = v.mrp - v.selling_price
-        else:
-            v.save_amount = 0
+        v.save_amount = v.mrp - v.selling_price if v.mrp > v.selling_price else 0
 
     return render(request, 'store/category.html', {
         'variants_100': variants_100,
         'variants_30': variants_30,
         'title': category
     })
+
+
 # ------------------------
-# CATEGORY PAGES
+# INDIVIDUAL CATEGORY PAGES
 # ------------------------
 def him(request):
-    fragrances = Fragrance.objects.filter(category='him')
+    fragrances = Fragrance.objects.filter(category='him', is_active=True)
 
     variants_100 = Variant.objects.filter(fragrance__in=fragrances, size='100', is_active=True)
     variants_30 = Variant.objects.filter(fragrance__in=fragrances, size='30', is_active=True)
@@ -77,7 +74,7 @@ def him(request):
 
 
 def her(request):
-    fragrances = Fragrance.objects.filter(category='her')
+    fragrances = Fragrance.objects.filter(category='her', is_active=True)
 
     variants_100 = Variant.objects.filter(fragrance__in=fragrances, size='100', is_active=True)
     variants_30 = Variant.objects.filter(fragrance__in=fragrances, size='30', is_active=True)
@@ -90,7 +87,7 @@ def her(request):
 
 
 def unisex(request):
-    fragrances = Fragrance.objects.filter(category='unisex')
+    fragrances = Fragrance.objects.filter(category='unisex', is_active=True)
 
     variants_100 = Variant.objects.filter(fragrance__in=fragrances, size='100', is_active=True)
     variants_30 = Variant.objects.filter(fragrance__in=fragrances, size='30', is_active=True)
@@ -103,7 +100,7 @@ def unisex(request):
 
 
 def oud(request):
-    fragrances = Fragrance.objects.filter(category='oud')
+    fragrances = Fragrance.objects.filter(category='oud', is_active=True)
 
     variants_100 = Variant.objects.filter(fragrance__in=fragrances, size='100', is_active=True)
     variants_30 = Variant.objects.filter(fragrance__in=fragrances, size='30', is_active=True)
@@ -116,7 +113,7 @@ def oud(request):
 
 
 # ------------------------
-# FRAGRANCE VIEWS
+# FRAGRANCE LIST
 # ------------------------
 def fragrance_list(request):
     fragrances = Fragrance.objects.filter(is_active=True)
@@ -125,7 +122,7 @@ def fragrance_list(request):
         variant = fragrance.variants.first()
         fragrance.main_variant = variant
 
-        if variant and variant.mrp and variant.mrp > variant.selling_price:
+        if variant and variant.mrp > variant.selling_price:
             variant.save_amount = variant.mrp - variant.selling_price
         else:
             variant.save_amount = 0
@@ -134,27 +131,27 @@ def fragrance_list(request):
         'fragrances': fragrances
     })
 
+
+# ------------------------
+# FRAGRANCE DETAIL
+# ------------------------
 def fragrance_detail(request, pk):
     fragrance = get_object_or_404(Fragrance, pk=pk, is_active=True)
 
-    variants_qs = fragrance.variants.filter(is_active=True)
+    variants = fragrance.variants.filter(is_active=True)
 
-    # attach save amount to each variant
-    variants = []
-
-    for v in variants_qs:
+    for v in variants:
         v.save_amount = v.mrp - v.selling_price
-        variants.append(v)
 
     return render(request, 'store/fragrance_detail.html', {
         'fragrance': fragrance,
         'variants': variants
     })
 
-
 # ------------------------
 # CART (SESSION BASED)
 # ------------------------
+
 def add_to_cart(request, variant_id):
     variant = get_object_or_404(Variant, id=variant_id, is_active=True)
 
@@ -237,6 +234,23 @@ def view_cart(request):
         'savings': savings,
     })
 
+# ------------------------
+# ONLINE PAYMENT (QR FIXED)
+# ------------------------
+def online_payment(request):
+    qr_obj = PaymentQR.objects.filter(is_active=True).first()
+
+    qr = None
+    if qr_obj and qr_obj.image:
+        try:
+            qr = qr_obj.image.url
+        except:
+            qr = None
+
+    return render(request, 'store/online_payment.html', {
+        'qr': qr
+    })
+
 
 # ------------------------
 # CHECKOUT
@@ -247,14 +261,10 @@ def checkout(request):
     if not cart:
         return redirect('fragrance_list')
 
-    total = 0
-
-    for item in cart.values():
-        total += item['price'] * item['quantity']
+    total = sum(item['price'] * item['quantity'] for item in cart.values())
 
     if request.method == 'POST':
 
-        # store user data temporarily
         request.session['order_data'] = {
             'full_name': request.POST.get('name'),
             'phone': request.POST.get('phone'),
@@ -266,40 +276,19 @@ def checkout(request):
 
         payment_method = request.POST.get('payment_method')
 
-        # COD → directly place order
         if payment_method == 'cod':
             return redirect('place_order')
 
-        # ONLINE → show QR page
         return redirect('online_payment')
 
     return render(request, 'store/checkout.html', {
         'total': total
     })
+
+
 # ------------------------
-# ORDER SUCCESS
+# PLACE ORDER
 # ------------------------
-def order_success(request, order_id):
-    order = Order.objects.get(id=order_id)
-
-    return render(request, 'store/success.html', {
-        'order': order
-    })
-
-def online_payment(request):
-    qr_obj = PaymentQR.objects.filter(is_active=True).first()
-
-    print("QR OBJECT:", qr_obj)
-    print("QR IMAGE:", qr_obj.image if qr_obj else None)
-
-    qr = None
-    if qr_obj and qr_obj.image:
-        qr = qr_obj.image.url
-
-    return render(request, 'store/online_payment.html', {
-        'qr': qr
-    })
-
 def place_order(request):
     cart = request.session.get('cart', {})
     order_data = request.session.get('order_data')
@@ -307,14 +296,12 @@ def place_order(request):
     if not cart or not order_data:
         return redirect('checkout')
 
-    total = order_data['total']
-
     order = Order.objects.create(
         full_name=order_data['full_name'],
         phone=order_data['phone'],
         email=order_data['email'],
         address=order_data['address'],
-        total_amount=total,
+        total_amount=order_data['total'],
         payment_method=order_data['payment_method'],
         status='confirmed'
     )
@@ -332,3 +319,14 @@ def place_order(request):
     request.session.pop('order_data', None)
 
     return redirect('order_success', order_id=order.id)
+
+
+# ------------------------
+# ORDER SUCCESS
+# ------------------------
+def order_success(request, order_id):
+    order = Order.objects.get(id=order_id)
+
+    return render(request, 'store/success.html', {
+        'order': order
+    })
