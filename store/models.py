@@ -178,18 +178,11 @@ class SliderImage(models.Model):
 class About(models.Model):
     description = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to='about/')
-    qr_code = models.ImageField(upload_to='qr/', blank=True, null=True)
 
     def __str__(self):
         return "About Section"
 
 
-class PaymentSettings(models.Model):
-    upi_qr = models.ImageField(upload_to='payment/')
-    upi_id = models.CharField(max_length=100, default="yourupi@bank")
-
-    def __str__(self):
-        return "Payment Settings"
 
 class PaymentQR(models.Model):
     image = models.ImageField(upload_to='qr_codes/')

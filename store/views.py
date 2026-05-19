@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Fragrance, SliderImage, About,  Variant, Order, OrderItem
+from .models import PaymentQR
 import urllib.parse
 
 
@@ -286,16 +287,16 @@ def order_success(request, order_id):
     })
 
 def online_payment(request):
-    about = About.objects.first()
+    qr_obj = PaymentQR.objects.filter(is_active=True).first()
 
     qr = None
-    if about and about.qr_code:
-        qr = about.qr_code.url   # ✅ THIS IS IMPORTANT
+    if qr_obj and qr_obj.image:
+        qr = qr_obj.image.url
 
     return render(request, 'store/online_payment.html', {
         'qr': qr
     })
-    
+
 def place_order(request):
     cart = request.session.get('cart', {})
     order_data = request.session.get('order_data')
