@@ -1,4 +1,7 @@
 from pathlib import Path
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -124,3 +127,9 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 # DEFAULT AUTO FIELD
 # -----------------------
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'duxjs4uas',
+    'API_KEY': '289482984148272',
+    'API_SECRET': '4pQs2z-wGK0KMxj57Q7ms0J2dQE',
+}

@@ -773,14 +773,14 @@ footer a:hover {
 }
 
 .total-box h3{
-    color: #1db954;
+    color: #1b3a2f;
     margin-top: 5px;
 }
 
 .checkout-btn{
     width: 100%;
     padding: 12px;
-    background: #1db954;
+    background: #1b3a2f;
     color: white;
     border: none;
     border-radius: 10px;
@@ -791,7 +791,7 @@ footer a:hover {
 }
 
 .checkout-btn:hover{
-    background: #17a74a;
+    background: #1b3a2f;
 }
 
 .qr-container{
@@ -822,7 +822,7 @@ footer a:hover {
     display:inline-block;
     margin-top:25px;
     padding:12px 25px;
-    background:green;
+    background:rgb(5, 56, 5);
     color:white;
     text-decoration:none;
     border-radius:8px;
