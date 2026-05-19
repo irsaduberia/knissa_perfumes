@@ -1,8 +1,15 @@
 from django.contrib import admin
-from .models import Fragrance, Variant, Offer, Order, OrderItem
-from .models import SiteSettings, SliderImage, About
-from .models import PaymentSettings
-from .models import PaymentQR
+from .models import (
+    Fragrance,
+    Variant,
+    Offer,
+    Order,
+    OrderItem,
+    SiteSettings,
+    SliderImage,
+    About,
+    PaymentQR
+)
 
 
 # ================================
