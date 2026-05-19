@@ -1,0 +1,94 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- 🔥 SLIDESHOW -->
+<div class="slideshow">
+    {% for slide in sliders %}
+        <img src="{{ slide.image.url }}" class="slide {% if forloop.first %}active{% endif %}">
+    {% endfor %}
+</div>
+
+<!-- 🔥 OUR COLLECTION -->
+<section class="collection-section">
+
+    <div class="section-title-box">
+        OUR COLLECTION
+    </div>
+
+    <div class="products-grid">
+
+        {% for item in products %}
+
+        {% if item.product %}
+
+        <div class="category-block">
+
+            <!-- CATEGORY LABEL -->
+            <h3 class="category-label">
+                {{ item.label }}
+            </h3>
+
+            <div class="product-card">
+
+                <a href="{% url 'category_page' item.product.category %}">
+
+                    {% if item.product.image %}
+                        <img src="{{ item.product.image.url }}">
+                    {% endif %}
+
+                </a>
+
+                <h3>{{ item.product.name }}</h3>
+
+                {% with variant=item.product.variants.first %}
+                    {% if variant %}
+                    <div class="price-box">
+                        <span class="selling-price">₹{{ variant.selling_price }}</span>
+                        {% if variant.mrp %}
+                            <span class="mrp">MRP ₹{{ variant.mrp }}</span>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                {% endwith %}
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<!-- 🔥 ABOUT US -->
+<section class="about-section">
+
+    <h2 class="section-title">About Us</h2>
+
+    <div class="about-container">
+
+        <!-- LEFT TEXT -->
+        <div class="about-text">
+            <p>
+                At K-Nissa Perfumes, we believe that fragrance is more than just a scent—it is an expression of identity, elegance, and timeless sophistication. Each of our creations is thoughtfully curated to capture the essence of luxury while remaining accessible to those who appreciate fine craftsmanship. Inspired by a blend of modern refinement and traditional richness, our perfumes are designed to leave a lasting impression, turning everyday moments into unforgettable experiences. We take pride in using high-quality ingredients, ensuring every note unfolds beautifully, from the first spray to the final lingering aroma. Whether you seek something bold and captivating or soft and graceful, K-Nissa offers a signature collection that resonates with every personality. Our mission is to bring you fragrances that not only enhance your presence but also tell your story—one scent at a time.
+
+            </p>
+        </div>
+
+        <!-- RIGHT IMAGE -->
+        <div class="about-image">
+        {% if about and about.image %}
+            <img src="{{ about.image.url }}" alt="About Us">
+        {% endif %}        
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

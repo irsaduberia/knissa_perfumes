@@ -1,0 +1,95 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="product-detail">
+
+    <!-- LEFT: IMAGE -->
+    <div class="product-image">
+        {% if fragrance.image %}
+            <img src="{{ fragrance.image.url }}" alt="{{ fragrance.name }}">
+        {% else %}
+            <img src="{% static 'images/placeholder.png' %}">
+        {% endif %}
+    </div>
+
+    <!-- RIGHT: DETAILS -->
+    <div class="product-details">
+
+        <h1>{{ fragrance.name }}</h1>
+
+        <p class="category">{{ fragrance.get_category_display }}</p>
+
+        <p class="description">
+            {{ fragrance.description }}
+        </p>
+
+        <!-- VARIANTS -->
+        <div class="variants">
+
+            {% for variant in variants %}
+
+            <div class="variant-box">
+
+                <div>
+
+                    <strong>{{ variant.size }} ML</strong>
+
+                    <div class="price-box">
+
+                        <span class="selling-price">
+                            ₹{{ variant.selling_price }}
+                        </span>
+
+                        {% if variant.mrp and variant.mrp > variant.selling_price %}
+                            <span class="mrp">
+                                ₹{{ variant.mrp }}
+                            </span>
+
+                            <p class="save">
+                                You save ₹{{ variant.mrp|add:"-"|add:variant.selling_price }}
+                            </p>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                {% if variant.stock > 0 %}
+                    <a href="{% url 'add_to_cart' variant.id %}" class="add-btn">
+                        Add to Cart
+                    </a>
+                {% else %}
+                    <button class="out-of-stock" disabled>Out of Stock</button>
+                {% endif %}
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- NOTES -->
+        <div class="notes">
+            <h3>Fragrance Notes</h3>
+
+            {% if fragrance.top_notes %}
+                <p><strong>Top:</strong> {{ fragrance.top_notes }}</p>
+            {% endif %}
+
+            {% if fragrance.middle_notes %}
+                <p><strong>Middle:</strong> {{ fragrance.middle_notes }}</p>
+            {% endif %}
+
+            {% if fragrance.base_notes %}
+                <p><strong>Base:</strong> {{ fragrance.base_notes }}</p>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

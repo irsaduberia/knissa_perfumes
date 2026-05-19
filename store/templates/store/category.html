@@ -1,0 +1,130 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="products-section">
+
+    <!-- CATEGORY TITLE -->
+    <h2 class="category-title-box">
+        {{ title }}
+    </h2>
+
+    <!-- ===================== -->
+    <!-- 100 ML COLLECTION -->
+    <!-- ===================== -->
+    {% if variants_100 %}
+
+        <h3 class="variant-heading">100 ML Collection</h3>
+
+        <div class="category-products">
+
+            {% for variant in variants_100 %}
+
+            <div class="product-card">
+
+                <a href="{% url 'fragrance_detail' variant.fragrance.id %}">
+                    {% if variant.fragrance.image %}
+                        <img src="{{ variant.fragrance.image.url }}">
+                    {% endif %}
+                </a>
+
+                <div class="product-info">
+
+                    <h3>{{ variant.fragrance.name }}</h3>
+
+                    <div class="price-box">
+
+                        <span class="selling-price">₹{{ variant.selling_price }}</span>
+
+                        {% if variant.mrp and variant.mrp > variant.selling_price %}
+                            <span class="mrp">₹{{ variant.mrp }}</span>
+
+                            <!-- SAVE AMOUNT -->
+                            <p class="save">
+                                You save ₹{{ variant.save_amount }}
+                            </p>
+                        {% endif %}
+
+                    </div>
+
+                    <!-- ADD TO CART -->
+                    <a href="{% url 'add_to_cart' variant.id %}" class="add-btn">
+                        Add to Cart
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- ===================== -->
+    <!-- 30 ML COLLECTION -->
+    <!-- ===================== -->
+    {% if variants_30 %}
+
+        <h3 class="variant-heading">30 ML Collection</h3>
+
+        <div class="category-products">
+
+            {% for variant in variants_30 %}
+
+            <div class="product-card">
+
+                <a href="{% url 'fragrance_detail' variant.fragrance.id %}">
+                    {% if variant.fragrance.image %}
+                        <img src="{{ variant.fragrance.image.url }}">
+                    {% endif %}
+                </a>
+
+                <div class="product-info">
+
+                    <h3>{{ variant.fragrance.name }}</h3>
+
+                    <div class="price-box">
+
+                        <span class="selling-price">₹{{ variant.selling_price }}</span>
+
+                        {% if variant.mrp and variant.mrp > variant.selling_price %}
+                            <span class="mrp">₹{{ variant.mrp }}</span>
+
+                            <!-- SAVE AMOUNT -->
+                            <p class="save">
+                                You save ₹{{ variant.save_amount }}
+                            </p>
+                        {% endif %}
+
+                    </div>
+
+                    <!-- ADD TO CART -->
+                    <a href="{% url 'add_to_cart' variant.id %}" class="add-btn">
+                        Add to Cart
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- EMPTY STATE -->
+    {% if not variants_100 and not variants_30 %}
+        <p class="empty-text">
+            No products available in this category.
+        </p>
+    {% endif %}
+
+</section>
+
+{% endblock %}

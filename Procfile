@@ -1,0 +1,1 @@
+web: gunicorn knissa_perfumes.wsgi:application

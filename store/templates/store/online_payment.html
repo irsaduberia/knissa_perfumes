@@ -1,0 +1,25 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+
+<div class="qr-container">
+
+    <h2 class="qr-title">Complete Your Payment</h2>
+
+    <p class="qr-sub">Scan the QR code below to pay</p>
+
+    <div class="qr-box">
+        {% if qr %}
+    <img src="{{ qr }}" alt="QR Code">
+{% else %}
+    <p>No QR Code Uploaded</p>
+{% endif %}
+    </div>
+
+    <a href="{% url 'place_order' %}" class="confirm-btn">
+        I Have Paid – Confirm Order
+    </a>
+
+</div>
+
+{% endblock %}

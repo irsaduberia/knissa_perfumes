@@ -1,0 +1,57 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+
+<section class="products-section">
+
+    <h2 class="section-title">Oud Collection</h2>
+
+    <div class="products-grid">
+        {% for fragrance in fragrances %}
+        <div class="product-card">
+
+            <a href="{% url 'fragrance_detail' fragrance.id %}">
+                {% if fragrance.image %}
+                    <img src="{{ fragrance.image.url }}" alt="{{ fragrance.name }}">
+                {% endif %}
+            </a>
+
+            <div class="product-info">
+                <h3>{{ fragrance.name }}</h3>
+
+                {% with variant=fragrance.variants.first %}
+                {% if variant %}
+                <div class="price-box">
+
+                    <!-- ✅ SELLING PRICE FIRST -->
+                    <span class="selling-price">
+                        ₹{{ variant.selling_price }}
+                    </span>
+
+                    <!-- ✅ MRP BELOW -->
+                    {% if variant.mrp and variant.mrp > variant.selling_price %}
+                        <span class="mrp">
+                            MRP ₹{{ variant.mrp }}
+                        </span>
+
+                        <!-- OPTIONAL SAVE -->
+                        <span class="save">
+                            Save ₹{{ variant.mrp|add:"-"|add:variant.selling_price }}
+                        </span>
+                    {% endif %}
+
+                </div>
+                {% endif %}
+                {% endwith %}
+
+            </div>
+
+        </div>
+        {% empty %}
+        <p>No fragrances available.</p>
+        {% endfor %}
+    </div>
+
+</section>
+
+{% endblock %}

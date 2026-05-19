@@ -1,0 +1,101 @@
+{% extends 'store/base.html' %}
+{% load static cart_extras %}
+
+{% block content %}
+
+<section class="cart-section">
+
+    <h2 class="cart-title">Your Cart</h2>
+
+    {% if cart %}
+
+    <div class="cart-container">
+
+        <!-- CART TABLE CARD -->
+        <div class="cart-card">
+
+            <div class="cart-header">
+                <div>Fragrance</div>
+                <div>Size</div>
+                <div>Price</div>
+                <div>Qty</div>
+                <div>Total</div>
+                <div></div>
+            </div>
+
+            {% for variant_id, item in cart.items %}
+
+            <div class="cart-row">
+
+                <div class="cart-col name">
+                    {{ item.name }}
+                </div>
+
+                <div class="cart-col">
+                    {{ item.size }} ML
+                </div>
+
+                <div class="cart-col">
+                    ₹{{ item.price }}
+                </div>
+
+                <div class="cart-col qty">
+                    <div class="qty-controls">
+                        <a href="{% url 'decrease_quantity' variant_id %}" class="qty-btn">−</a>
+                        <span>{{ item.quantity }}</span>
+                        <a href="{% url 'increase_quantity' variant_id %}" class="qty-btn">+</a>
+                    </div>
+                </div>
+
+                <div class="cart-col">
+                    ₹{{ item.price|mul:item.quantity }}
+                </div>
+
+                <div class="cart-col">
+                    <a href="{% url 'remove_from_cart' variant_id %}" class="remove-btn">✕</a>
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- SUMMARY CARD -->
+        <div class="cart-summary">
+
+            <p>MRP Total: ₹{{ mrp_total }}</p>
+
+            {% if savings > 0 %}
+                <p class="savings">You saved ₹{{ savings }} 🎉</p>
+            {% endif %}
+
+            <h3>Total: ₹{{ total }}</h3>
+
+            <a href="{% url 'checkout' %}" class="checkout-btn">
+                Proceed to Checkout
+            </a>
+
+            <a href="{% url 'fragrance_list' %}" class="continue-btn">
+                Continue Shopping
+            </a>
+
+        </div>
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-cart">
+        <p>Your cart is empty.</p>
+
+        <a href="{% url 'fragrance_list' %}" class="continue-btn">
+            Browse Fragrances
+        </a>
+    </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+
+<section class="success-wrapper">
+
+    <div class="success-card">
+
+        <!-- ICON -->
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <!-- TITLE -->
+        <h1 class="success-title">
+            Order Confirmed
+        </h1>
+
+        <p class="success-subtitle">
+            Thank you for choosing K-Nissa. Your order has been placed successfully.
+        </p>
+
+        <!-- ORDER INFO -->
+        <div class="success-box">
+            <p><strong>Order ID:</strong> #{{ order.id }}</p>
+            <p><strong>Total Paid:</strong> ₹{{ order.total_amount }}</p>
+        </div>
+
+        <!-- WHATSAPP BUTTON -->
+        {% if whatsapp_url %}
+        <a href="{{ whatsapp_url }}" target="_blank" class="whatsapp-btn">
+            Confirm on WhatsApp
+        </a>
+        {% endif %}
+
+        <!-- CONTINUE SHOPPING -->
+        <a href="{% url 'fragrance_list' %}" class="continue-link">
+            Continue Shopping
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}
