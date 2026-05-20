@@ -335,11 +335,12 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 
 def create_admin(request):
-    username = "admin"
-    password = "admin12345"
-
-    if not User.objects.filter(username=username).exists():
-        User.objects.create_superuser(username=username, email="admin@knissa.com", password=password)
-        return HttpResponse("Admin created successfully")
+    if not User.objects.filter(username="admin").exists():
+        User.objects.create_superuser(
+            username="irsa@admin27",
+            email="irsaduberia@gmail.com",
+            password="s101080S@"
+        )
+        return HttpResponse("Admin created")
 
     return HttpResponse("Admin already exists")
