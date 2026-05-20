@@ -85,13 +85,14 @@ footer a:hover {
 /* SLIDESHOW */
 .slideshow {
     width: 100%;
-    height: 400px;
+    height: 85vh;
     overflow: hidden;
+    position: relative;
 }
 
 .slide {
     width: 100%;
-    height: 400px;
+    height: 85vh;
     object-fit: cover;
     display: none;
 }
@@ -100,6 +101,18 @@ footer a:hover {
     display: block;
 }
 
+/* MOBILE FIX */
+@media (max-width: 768px) {
+
+    .slideshow {
+        height: 45vh;
+    }
+
+    .slide {
+        height: 45vh;
+    }
+
+}
 
 /* =========================
    SECTION TITLE BOX (GLOBAL)
