@@ -105,6 +105,10 @@ class Order(models.Model):
     status = models.CharField(max_length=20, choices=ORDER_STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
 
+    shipping_charge = models.IntegerField(default=0)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+
     def __str__(self):
         return f"Order #{self.id} - {self.full_name}"
 

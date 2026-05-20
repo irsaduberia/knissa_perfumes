@@ -31,18 +31,47 @@
                 <textarea name="address" rows="3" required></textarea>
             </div>
 
+            <!-- ✅ NEW CITY -->
             <div class="form-group">
-                <label>Payment Method</label>
-                <select name="payment_method">
-                    <option value="cod">Cash on Delivery</option>
-                    <option value="online">Online Payment</option>
-                </select>
+                <label>City</label>
+                <input type="text" name="city" placeholder="Enter City" required>
             </div>
 
-            <div class="total-box">
-                <p>Total Payable</p>
-                <h3>₹{{ total }}</h3>
+            <!-- ✅ NEW STATE -->
+            <div class="form-group">
+                <label>State</label>
+                <input type="text" name="state" placeholder="Enter State" required>
             </div>
+ 
+<div class="form-group">
+    <label>Pincode</label>
+    <input type="text" name="pincode" placeholder="Enter Pincode" required>
+</div>
+
+
+            <div class="form-group">
+                <label>Payment Method</label>
+                <select name="payment_method" required>
+    <option value="online">Online Payment</option>
+    <option value="cod" disabled>Cash on Delivery (Currently Unavailable)</option>
+</select>
+            </div>
+
+            <!-- SUMMARY BOX -->
+            <div class="total-box">
+    <p>Subtotal</p>
+    <h3>₹{{ subtotal }}</h3>
+</div>
+
+<div class="total-box">
+    <p>Shipping</p>
+    <h3 id="shipping">₹250</h3>
+</div>
+
+<div class="total-box">
+    <p>Total Payable</p>
+    <h3 id="total">₹{{ subtotal|add:250 }}</h3>
+</div>
 
             <button type="submit" class="checkout-btn">
                 Place Order
@@ -53,5 +82,53 @@
     </div>
 
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const cityInput = document.querySelector("input[name='city']");
+    const stateInput = document.querySelector("input[name='state']");
+    const pinInput = document.querySelector("input[name='pincode']");
+
+    const shippingBox = document.querySelector("#shipping");
+    const totalBox = document.querySelector("#total");
+
+    let subtotal = parseInt("{{ subtotal }}");
+
+    function calculateShipping() {
+
+        let city = cityInput.value.toLowerCase().trim();
+        let state = stateInput.value.toLowerCase().trim();
+        let pin = pinInput.value.trim();
+
+        let shipping = 250;
+
+        // Mumbai rule
+        if (city === "mumbai") {
+            shipping = 100;
+        }
+
+        // Maharashtra rule
+        else if (state === "maharashtra") {
+            shipping = 200;
+        }
+
+        // OPTIONAL: future pincode-based logic (ready for scaling)
+        else if (pin.startsWith("400")) {
+            shipping = 100; // Mumbai pincodes
+        }
+
+        let total = subtotal + shipping;
+
+        shippingBox.innerText = "₹" + shipping;
+        totalBox.innerText = "₹" + total;
+    }
+
+    cityInput.addEventListener("input", calculateShipping);
+    stateInput.addEventListener("input", calculateShipping);
+    pinInput.addEventListener("input", calculateShipping);
+
+});
+</script>
 
 {% endblock %}

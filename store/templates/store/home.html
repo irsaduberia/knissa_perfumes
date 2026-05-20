@@ -78,33 +78,38 @@
 </section>
 
 <!-- 🔥 ABOUT US -->
-<section class="about-section">
+<div class="about-section">
 
-    <h2 class="section-title">About Us</h2>
+    <!-- GREEN HEADING -->
+    <div class="about-heading-box">
+        <h2>About Us</h2>
+    </div>
 
-    <div class="about-container">
+    <!-- FLEX CONTENT -->
+    <div class="about-content">
 
         <!-- LEFT TEXT -->
         <div class="about-text">
             <p>
                 Founded on 25 February 2025, Knissa Perfume is a proud part of the ever-growing Duberia Group — a name driven by passion, vision, and excellence.
-At Knissa, fragrance is more than just a scent; it is an expression of identity, elegance, and emotion.
 
-Inspired by the harmony of modern refinement and timeless luxury, every fragrance we create is designed to leave a lasting impression. Our signature collections are carefully crafted to resonate with every personality — bold, graceful, confident, and unique.
+                At Knissa, fragrance is more than just a scent; it is an expression of identity, elegance, and emotion.
 
-We believe that a fragrance has the power to tell a story without words. It becomes a memory, a feeling, a presence that stays behind long after you leave the room. That is why our mission is to bring you fragrances that not only enhance your presence but also reflect who you truly are — one scent at a time.
+                Inspired by the harmony of modern refinement and timeless luxury, every fragrance we create is designed to leave a lasting impression. Our signature collections are carefully crafted to resonate with every personality — bold, graceful, confident, and unique.
+
+                We believe that a fragrance has the power to tell a story without words. It becomes a memory, a feeling, a presence that stays behind long after you leave the room. That is why our mission is to bring you fragrances that not only enhance your presence but also reflect who you truly are — one scent at a time.
             </p>
         </div>
 
         <!-- RIGHT IMAGE -->
         <div class="about-image">
-        {% if about and about.image %}
-            <img src="{{ about.image.url }}" alt="About Us">
-        {% endif %}        
+            {% if about and about.image %}
+                <img src="{{ about.image.url }}" alt="About Us">
+            {% endif %}
         </div>
 
     </div>
 
-</section>
+</div>
 
 {% endblock %}

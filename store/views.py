@@ -261,31 +261,47 @@ def checkout(request):
     if not cart:
         return redirect('fragrance_list')
 
-    total = sum(item['price'] * item['quantity'] for item in cart.values())
+    subtotal = sum(item['price'] * item['quantity'] for item in cart.values())
 
     if request.method == 'POST':
 
+        city = request.POST.get('city', '').strip().lower()
+        state = request.POST.get('state', '').strip().lower()
+
+        # SHIPPING LOGIC
+        if city == 'mumbai':
+            shipping_charge = 100
+        elif state == 'maharashtra':
+            shipping_charge = 200
+        else:
+            shipping_charge = 250
+
+        total = subtotal + shipping_charge
+
+        # SAVE ORDER DATA IN SESSION
         request.session['order_data'] = {
             'full_name': request.POST.get('name'),
             'phone': request.POST.get('phone'),
             'email': request.POST.get('email'),
             'address': request.POST.get('address'),
+            'city': request.POST.get('city'),
+            'state': request.POST.get('state'),
+            'pincode': request.POST.get('pincode'),
             'payment_method': request.POST.get('payment_method'),
+            'subtotal': subtotal,
+            'shipping': shipping_charge,
             'total': total,
         }
 
-        payment_method = request.POST.get('payment_method')
-
-        if payment_method == 'cod':
-            return redirect('place_order')
-
+        # FORCE ONLINE PAYMENT ONLY (COD DISABLED)
         return redirect('online_payment')
 
     return render(request, 'store/checkout.html', {
-        'total': total
+        'subtotal': subtotal,
+        'total': subtotal,
     })
 
-
+    
 # ------------------------
 # PLACE ORDER
 # ------------------------
