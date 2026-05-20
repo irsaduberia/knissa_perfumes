@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
 
+    path('', views.home, name='root_home'),
     path('home/', views.home, name='home'),
     path('category/<str:category>/', views.category_page, name='category_page'),
     # Fragrances
