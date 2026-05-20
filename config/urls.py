@@ -12,7 +12,7 @@ urlpatterns = [
     path('', include('store.urls')),
 
     path('online-payment/', views.online_payment, name='online_payment'),
-    path('online-payment/', include('store.urls')),
+    path('', include('store.urls')),
 ]
 
 # ✅ MEDIA FILES (for images)
