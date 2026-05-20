@@ -66,6 +66,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'store.context_processors.cart_count',
             ],
         },
     },
@@ -133,3 +134,4 @@ CLOUDINARY_STORAGE = {
     'API_KEY': '289482984148272',
     'API_SECRET': '4pQs2z-wGK0KMxj57Q7ms0J2dQE',
 }
+

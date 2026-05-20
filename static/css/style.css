@@ -855,3 +855,31 @@ footer a:hover {
     border-radius:8px;
     font-weight:bold;
 }
+
+.cart-icon{
+    position: relative;
+    font-size: 24px;
+    color: #d4af37;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.cart-icon:hover{
+    transform: scale(1.08);
+}
+
+.cart-count{
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background: #d4af37;
+    color: black;
+    font-size: 12px;
+    font-weight: bold;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
