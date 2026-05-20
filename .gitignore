@@ -1,10 +1,24 @@
-venv/
-env/
+# Python
 __pycache__/
 *.pyc
+*.pyo
 
+# Virtual environment
+venv/
+env/
+
+# Database
 db.sqlite3
+
+# Media uploads (production should use cloud or server storage)
 media/
 
+# Static collected files
+staticfiles/
+
+# Environment variables
+.env
+
+# IDE
 .vscode/
 .idea/
