@@ -50,17 +50,27 @@
 
 
 <script>
-let slides = document.querySelectorAll('.slide');
 
-if (slides.length > 0) {
+function startSlider(selector) {
+    const slides = document.querySelectorAll(selector);
+    if (!slides.length) return;
+
     let index = 0;
 
     setInterval(() => {
+
         slides[index].classList.remove('active');
+
         index = (index + 1) % slides.length;
+
         slides[index].classList.add('active');
+
     }, 3000);
 }
+
+startSlider('.desktop-slide');
+startSlider('.mobile-slide');
+
 </script>
 
 <script>

@@ -5,9 +5,21 @@
 
 <!-- 🔥 SLIDESHOW -->
 <div class="slideshow">
+
     {% for slide in sliders %}
-        <img src="{{ slide.image.url }}" class="slide {% if forloop.first %}active{% endif %}">
+
+        {% if slide.desktop_image %}
+        <img src="{{ slide.desktop_image.url }}"
+             class="slide desktop-slide {% if forloop.first %}active{% endif %}">
+        {% endif %}
+
+        {% if slide.mobile_image %}
+        <img src="{{ slide.mobile_image.url }}"
+             class="slide mobile-slide {% if forloop.first %}active{% endif %}">
+        {% endif %}
+
     {% endfor %}
+
 </div>
 
 <!-- 🔥 OUR COLLECTION -->

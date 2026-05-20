@@ -138,7 +138,10 @@ class SiteSettings(models.Model):
 
 class SliderImage(models.Model):
     title = models.CharField(max_length=100, blank=True)
-    image = models.ImageField(upload_to='slider/')
+
+    desktop_image = models.ImageField(upload_to='slider/')
+    mobile_image = models.ImageField(upload_to='slider/mobile/', blank=True, null=True)
+
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
