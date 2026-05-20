@@ -330,17 +330,3 @@ def order_success(request, order_id):
     return render(request, 'store/success.html', {
         'order': order
     })
-
-from django.contrib.auth.models import User
-from django.http import HttpResponse
-
-def create_admin(request):
-    if not User.objects.filter(username="admin").exists():
-        User.objects.create_superuser(
-            username="irsa@admin27",
-            email="irsaduberia@gmail.com",
-            password="s101080S@"
-        )
-        return HttpResponse("Admin created")
-
-    return HttpResponse("Admin already exists")
